@@ -11,7 +11,7 @@ export const getById = async (id) => {
   try {
     const response = await api.get(`/${id}`);  
     if (response.status === 200) { 
-      console.log(response.data);
+      alert(`nombre: ${response.data.first_name} ${response.data.last_name}`);
     }
   } catch (error) {
     console.log('Error en el código: ', error);

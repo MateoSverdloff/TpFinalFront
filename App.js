@@ -1,5 +1,23 @@
 "use Client";
 
+// IMPORTANTE PARA EL PUT
+
+// https://axios-http.com/docs/post_example
+
+// axios.post('/user', {
+//   firstName: 'Fred',
+//   lastName: 'Flintstone'
+// })
+// .then(function (response) {
+//   console.log(response);
+// })
+// .catch(function (error) {
+//   console.log(error);
+// });
+
+
+
+
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Button, TextInput, SafeAreaView } from 'react-native';
 import * as React from 'react';
