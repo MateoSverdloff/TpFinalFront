@@ -1,27 +1,9 @@
 "use Client";
 
-// IMPORTANTE PARA EL PUT
-
-// https://axios-http.com/docs/post_example
-
-// axios.post('/user', {
-//   firstName: 'Fred',
-//   lastName: 'Flintstone'
-// })
-// .then(function (response) {
-//   console.log(response);
-// })
-// .catch(function (error) {
-//   console.log(error);
-// });
-
-
-
-
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Button, TextInput, SafeAreaView } from 'react-native';
 import * as React from 'react';
-import { getById } from './services/api';
+import { getById } from './services/UserServices';
 
 export default function App() {
   const [number, setNumber] = React.useState(''); 
@@ -42,6 +24,10 @@ export default function App() {
         title="Enviar"
         onPress={handlePress}
       />
+
+      <Text>Login </Text>
+      <TextInputExample value={user} onChangeText={setNumber} placeholder="User"/>
+      <TextInputExample value={password} onChangeText={setNumber} placeholder="Password"/>
       <StatusBar style="auto" />
     </View>
   );

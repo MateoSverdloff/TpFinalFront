@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView, FlatList, Text, View, StyleSheet, Image, TouchableOpacity, Button, TextInput, Alert } from 'react-native';
-import { getById } from '../services/api.js'
+import { getById } from '../services/UserServices.js'
 
 // const EventoItem = ({ evento, onPress }) => (
 //   <TouchableOpacity style={styles.itemContainer} onPress={onPress}>
