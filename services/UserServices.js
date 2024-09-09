@@ -1,7 +1,8 @@
 import axios from 'axios';
+import {jwtDecode} from 'jwt-decode';
 
 const api = axios.create({
-  baseURL: 'https://971a-200-73-176-50.ngrok-free.app/api/user/',
+  baseURL: 'https://wholly-intense-kiwi.ngrok-free.app/api/user/',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -9,42 +10,40 @@ const api = axios.create({
 
 export const getById = async (id) => {
   try {
-    const response = await api.get(`/${id}`);  
-    if (response.status === 200) { 
-      alert(`nombre: ${response.data.first_name} ${response.data.last_name}`);
+    const response = await api.get(`/${id}`);
+    if (response.status === 200) {
+      return response.data;
     }
   } catch (error) {
-    console.log('Error en el código: ', error);
     throw error;
   }
 };
 
-export const Login = async (nombre, apellido) => {
-    axios.post('/login', {
-        firstName: `${nombre}`,
-        lastName: `${apellido}`,
-      })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-}
+export const login = async (username, password) => {
+  try {
+    const response = await api.post('https://wholly-intense-kiwi.ngrok-free.app/api/user/login', {
+      username: username,
+      password: password,
+    });
+    const token = response.token;
+    const getUserFromToken = (token) => {
+      try {
+        console.log(token)
+        const decodedToken = jwtDecode(token);
+        return decodedToken;
+      } catch (error) {
+        /*console.error('Error decoding token:', error);*/
+        return null;
+      }
+    };
 
-
-// IMPORTANTE PARA EL PUT
-
-// https://axios-http.com/docs/post_example
-
-// axios.post('/user', {
-//   firstName: 'Fred',
-//   lastName: 'Flintstone'
-// })
-// .then(function (response) {
-//   console.log(response);
-// })
-// .catch(function (error) {
-//   console.log(error);
-// });
-
+    if (response.data.success) {
+      const user = getUserFromToken(token);
+      return response.data;
+    } else {
+      throw new Error(response.data.message);
+    }
+  } catch (error) {
+    throw error;
+  }
+};

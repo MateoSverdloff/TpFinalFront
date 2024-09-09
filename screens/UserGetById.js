@@ -1,34 +1,59 @@
-import React, { useEffect, useState } from 'react';
-import { SafeAreaView, FlatList, Text, View, StyleSheet, Image, TouchableOpacity, Button, TextInput, Alert } from 'react-native';
-import { getById } from '../services/UserServices.js'
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, Button, TextInput, SafeAreaView, Alert } from 'react-native';
+import { getById } from '../services/UserServices';
 
-// const EventoItem = ({ evento, onPress }) => (
-//   <TouchableOpacity style={styles.itemContainer} onPress={onPress}>
-//     <Image source={{ uri: evento.Poster }} style={styles.imagen} />
-//     <View style={styles.textContainer}>
-//       <Text style={styles.name}>{evento.Title}</Text>
-//       <Text style={styles.description}>{evento.Type}</Text>
-//       <Text style={styles.start_date}>{evento.Year}</Text>
-//     </View>
-//   </TouchableOpacity>
-// );
+const UserGetById = () => {
+  const [search, setSearch] = useState('');
 
-const UserGetById = ({ navigation }) => {
-  const [search, setSearch] = useState(''); 
- // const [movies, setMovies] = useState([]);
-
-  const obtenerUser = async () => {
-    try {
-      const response = await getById(search);
-      if (response.Search) {
-        getById(response.Search);  
-      } else {
-        Alert.alert('No se encontraron resultados');
-        getById([]);
+  const handleSearch = async () => {
+    if (search.trim() !== '') {
+      try {
+        const response = await getById(search);
+        Alert.alert(`Nombre: ${response.first_name} ${response.last_name}`);
+      } catch (error) {
+        Alert.alert('Error al buscar usuario');
       }
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      Alert.alert('Error al buscar películas');
+    } else {
+      Alert.alert('Please enter a valid ID');
     }
   };
-}
+
+  return (
+    <View style={styles.container}>
+      <Text>Inserte un ID para buscar:</Text>
+      <TextInputExample value={search} onChangeText={setSearch} placeholder="ID" keyboardType="numeric" />
+      <Button title="Buscar" onPress={handleSearch} />
+    </View>
+  );
+};
+
+const TextInputExample = ({ value, onChangeText, placeholder, keyboardType }) => {
+  return (
+    <SafeAreaView>
+      <TextInput
+        style={styles.input}
+        onChangeText={onChangeText}
+        value={value}
+        placeholder={placeholder}
+        keyboardType={keyboardType}
+      />
+    </SafeAreaView>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+  },
+});
+
+export default UserGetById;
