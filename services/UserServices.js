@@ -47,3 +47,22 @@ export const login = async (username, password) => {
     throw error;
   }
 };
+
+export const registerTo = async (first_name, last_name, username, password) => {
+  try {
+    const response = await api.post('https://wholly-intense-kiwi.ngrok-free.app/api/user/', {
+      first_name: first_name,
+      last_name: last_name,
+      username: username,
+      password: password,
+    });
+
+    if (response.status === 201 || response.status === 200) {
+      return response.data; 
+    } else {
+      throw new Error(response.data?.message || 'Registration failed');
+    }
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Registration failed');
+  }
+};

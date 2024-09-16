@@ -1,32 +1,37 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, Button, TextInput, SafeAreaView, Alert } from 'react-native';
 import { useAuth } from '../AuthContext';
+import  { registerTo }  from '../services/UserServices.js'
 
-const LoginScreen = ({ navigation }) => {
+const RegisterScreen = ({ navigation }) => {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const { login } = useAuth();
+  const { register } = useAuth();
 
-  const handleLogin = async () => {
-    if (username.trim() !== '' && password.trim() !== '') {
+  const handleRegister = async () => {
+    if (firstName && lastName && username && password) {
       try {
-        await login(username, password);
-        Alert.alert('Login successful');
+        await register(firstName, lastName, username, password);
+        Alert.alert('Registration successful');
+        navigation.goBack();
       } catch (error) {
-        Alert.alert(`Login failed: ${error.message}`);
+        Alert.alert(`Registration failed: ${error.message}`);
       }
     } else {
-      Alert.alert('Please enter both username and password');
+      Alert.alert('Please fill in all fields');
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text>Login</Text>
+      <Text>Register</Text>
+      <TextInputExample value={firstName} onChangeText={setFirstName} placeholder="First Name" />
+      <TextInputExample value={lastName} onChangeText={setLastName} placeholder="Last Name" />
       <TextInputExample value={username} onChangeText={setUsername} placeholder="Username" />
       <TextInputExample value={password} onChangeText={setPassword} placeholder="Password" secureTextEntry={true} />
-      <Button title="Login" onPress={handleLogin} />
-      <Button title="Register" onPress={() => navigation.navigate('Register')} />
+      <Button title="Register" onPress={handleRegister} />
     </View>
   );
 };
@@ -60,4 +65,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default RegisterScreen;

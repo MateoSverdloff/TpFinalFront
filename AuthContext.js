@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext } from 'react';
-import { login as loginService } from './services/UserServices.js';
+import { login as loginService, registerTo } from './services/UserServices.js';
 import {jwtDecode} from 'jwt-decode';
 
 const AuthContext = createContext();
@@ -7,6 +7,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
+
   const login = async (username, password) => {
     try {
       const response = await loginService(username, password);
@@ -22,13 +23,27 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const register = async (firstName, lastName, username, password) => {
+    try {
+      const response = await registerTo(firstName, lastName, username, password);
+      if (response) {
+        await login(username, password);
+      } else {
+        throw new Error('Registration failed');
+      }
+    } catch (error) {
+      throw new Error(error.message || 'Registration failed');
+    }
+  };
+  
+
   const logout = () => {
     setIsAuthenticated(false);
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout, user }}>
+    <AuthContext.Provider value={{ isAuthenticated, login, register, logout, user }}>
       {children}
     </AuthContext.Provider>
   );
