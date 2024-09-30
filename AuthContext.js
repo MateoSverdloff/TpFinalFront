@@ -14,7 +14,7 @@ export const AuthProvider = ({ children }) => {
       if (response.success) {
         setIsAuthenticated(true);
         const decodedUser = jwtDecode(response.token);
-        setUser(decodedUser);
+        setUser({ ...decodedUser, token: response.token });
       } else {
         throw new Error(response.message);
       }

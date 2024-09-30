@@ -33,11 +33,13 @@ const EventScreen = ({ navigation }) => {
   );
   return (
     <View style={styles.container}>
-      <FlatList
-        data={events}
-        renderItem={renderEventCard}
-        keyExtractor={(item) => item.id.toString()}
-      />
+<FlatList
+  data={events}
+  renderItem={renderEventCard}
+  keyExtractor={(item) => item.id.toString()}
+  extraData={events}
+/>
+
     </View>
   );
 };
