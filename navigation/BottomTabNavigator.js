@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import UserGetById from '../screens/UserGetById.js'; 
 import LoginScreen from '../screens/LoginScreen.js'; 
 import { useAuth } from '../AuthContext.js';
+import EventScreen from '../screens/EventScreen';
 import UserProfileScreen from '../screens/UserProfileScreen';
 
 
@@ -21,6 +22,8 @@ const BottomTabNavigator = () => {
             iconName = 'search';
           } else if (route.name === 'UserProfile') {
             iconName = 'person';
+          } else if (route.name === 'Events') { // Agregamos esta línea
+            iconName = 'calendar'; // Puedes cambiar el ícono
           }
           return <Icon name={iconName} size={size} color={color} />;
         },
@@ -28,10 +31,10 @@ const BottomTabNavigator = () => {
     >
       <Tab.Screen name="UserGetById" component={UserGetById} options={{ title: 'Buscar Usuario' }} />
       <Tab.Screen name="UserProfile" component={UserProfileScreen} options={{ title: 'Perfil' }} />
+      <Tab.Screen name="Events" component={EventScreen} options={{ title: 'Eventos' }} />
     </Tab.Navigator>
   );
 };
 
-export default BottomTabNavigator;
 
-/*       <Tab.Screen name="Login" component={LoginScreen} /> */
+export default BottomTabNavigator;
