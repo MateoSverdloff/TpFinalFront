@@ -9,51 +9,55 @@ const api = axios.create({
 });
 
 export const getParticipants = async (eventId) => {
-    try {
-      const response = await api.get(`/${eventId}/`);
+  try {
+      const response = await api.get(`/${eventId}/enrollment`);
       if (response.status === 200) {
-        return response.data;
+          // Extraer la lista de participantes
+          return response.data.response[0].response; // Aquí extraemos los participantes
       }
-    } catch (error) {
+  } catch (error) {
       throw error;
-    }
-  };
+  }
+};
   
   export const subscribeToEvent = async (eventId, token) => {
-    console.log('evento ',eventId)
-    console.log('token ', token)
+    console.log('evento ', eventId);
+    console.log('token ', token);
     try {
-      if (!token) throw new Error('Token no disponible');
-  
-      const response = await api.post(`/${eventId}/enrollment`, null, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-  
-      if (response.status === 200) {
-        return response.data;
-      }
+        if (!token) throw new Error('Token no disponible');
+        const response = await api.post(`/${eventId}/enrollment`, {}, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (response.status === 200) {
+            return response.data; 
+        } else {
+            throw new Error('Error en la inscripción');
+        }
     } catch (error) {
-      console.error('Error al inscribirse al evento:', error);
-      throw error;
+        console.error('Error al inscribirse al evento:', error);
+        throw error;
     }
-  };
-  
-  export const unsubscribeFromEvent = async (eventId, token) => {
-    try {
+};
+
+export const unsubscribeFromEvent = async (eventId, token) => {
+  try {
       if (!token) throw new Error('Token no disponible');
-  
-      const response = await api.delete(`/${eventId}/enrollment`, null, {
-        headers: { Authorization: `Bearer ${token}` },
+      const response = await api.delete(`/${eventId}/enrollment`, {
+          headers: { Authorization: `Bearer ${token}` },
       });
-  
+
       if (response.status === 200) {
-        return response.data;
+          return response.data;
+      } else {
+          throw new Error('Error al desinscribirse'); 
       }
-    } catch (error) {
+  } catch (error) {
       console.error('Error al desinscribirse del evento:', error);
       throw error;
-    }
-  };
+  }
+};
+
   
   export const getEvents = async () => {
     try {
